@@ -5,6 +5,9 @@ let cors = require('cors');
 const app = express();
 const port = 3000;
 
+app.use(express.static('public'));
+
+
 app.use(cors());
 let products = [
   {
