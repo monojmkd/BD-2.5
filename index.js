@@ -1,13 +1,9 @@
 const express = require('express');
-const { resolve } = require('path');
-let cors = require('cors');
+const cors = require('cors');
 
 const app = express();
 const port = 3000;
-
-app.use(express.static('public'));
-
-
+// app.use(express.static('public'));
 app.use(cors());
 let products = [
   {
@@ -306,7 +302,7 @@ app.get('/products/filter/os', (req, res) => {
 
 // Endpoint 8
 function filterByPrice(product, filterPrice) {
-  return product.price === filterPrice;
+  return product.price <= filterPrice;
 }
 app.get('/products/filter/price', (req, res) => {
   let filterPrice = parseFloat(req.query.price);
