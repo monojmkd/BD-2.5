@@ -1,10 +1,14 @@
 const express = require('express');
-const cors = require('cors');
+const { resolve } = require('path');
 
 const app = express();
-const port = 3000;
-// app.use(express.static('public'));
+const port = 3010;
+
+app.use(express.static('static'));
+
+let cors = require('cors');
 app.use(cors());
+
 let products = [
   {
     id: 1,
@@ -228,91 +232,84 @@ let products = [
   },
 ];
 
-// Endpoint 1
-function sortProductsHighToLow(product1, product2) {
-  return product2.rating - product1.rating;
+function sortedProducts(x, y) {
+  return x.rating - y.rating;
 }
+
 app.get('/products/sort/popularity', (req, res) => {
-  let sortedProducts = products.slice();
-  sortedProducts.sort(sortProductsHighToLow);
-  res.json(sortedProducts);
+  prodCopy = products.slice();
+  prodCopy.sort(sortedProducts);
+  res.json(prodCopy);
 });
 
-// Endpoint 2
-function sortProductsPriceHighToLow(product1, product2) {
-  return product2.price - product1.price;
+function sortedProducts1(x, y) {
+  return y.price - x.price;
 }
+
 app.get('/products/sort/price-high-to-low', (req, res) => {
-  let sortedProducts = products.slice();
-  sortedProducts.sort(sortProductsPriceHighToLow);
-  res.json(sortedProducts);
+  productsCopy = products.slice();
+  productsCopy.sort(sortedProducts1);
+  res.json(productsCopy);
 });
 
-// Endpoint 3
-function sortProductsPriceLowToHigh(product1, product2) {
-  return product1.price - product2.price;
+function sortedProducts(x, y) {
+  return x.price - y.price;
 }
+
 app.get('/products/sort/price-low-to-high', (req, res) => {
-  let sortedProducts = products.slice();
-  sortedProducts.sort(sortProductsPriceLowToHigh);
-  res.json(sortedProducts);
+  productsCopy = products.slice();
+  productsCopy.sort(sortedProducts);
+  res.json(productsCopy);
 });
 
-// Endpoint 4
-function filterByRam(product, filterRam) {
-  return product.ram === filterRam;
+function filterByRam(x, y) {
+  return x.ram >= y;
 }
+
 app.get('/products/filter/ram', (req, res) => {
-  let filterRam = parseInt(req.query.ram);
-  let result = products.filter((product) => filterByRam(product, filterRam));
-  res.json(result);
+  productsCopy = products.slice();
+  productsCopy.sort(filterByRam);
+  res.json(productsCopy);
 });
 
-// Endpoint 5
-function filterByRom(product, filterRom) {
-  return product.rom === filterRom;
+function filterByRom(x, y) {
+  return x.rom >= y;
 }
+
 app.get('/products/filter/rom', (req, res) => {
-  let filterRom = parseInt(req.query.rom);
-  let result = products.filter((product) => filterByRom(product, filterRom));
-  res.json(result);
+  productsCopy = products.slice();
+  productsCopy.sort(filterByRom);
+  res.json(productsCopy);
 });
 
-// Endpoint 6
-function filterByBrand(product, filterBrand) {
-  return product.brand.toLowerCase() === filterBrand.toLowerCase();
+function filterByBrand(products, brand) {
+  return products.filter(
+    (product) => product.brand.toLowerCase() == brand.toLowerCase()
+  );
 }
+
 app.get('/products/filter/brand', (req, res) => {
-  let filterBrand = req.query.brand;
-  let result = products.filter((product) =>
-    filterByBrand(product, filterBrand)
-  );
-  res.json(result);
+  res.json(filterByBrand(products, req.query.brand));
 });
 
-// Endpoint 7
-function filterByOs(product, filterOs) {
-  return product.os.toLowerCase() === filterOs.toLowerCase();
+function filterByOs(products, Os) {
+  return products.os.toLowerCase() === Os.toLowerCase();
 }
+
 app.get('/products/filter/os', (req, res) => {
-  let filterOs = req.query.os;
-  let result = products.filter((product) => filterByOs(product, filterOs));
-  res.json(result);
+  res.json(products.filter((product) => filterByOs(product, req.query.Os)));
 });
 
-// Endpoint 8
-function filterByPrice(product, filterPrice) {
-  return product.price <= filterPrice;
+function filterByPrice(prod, price) {
+  return prod.price <= price;
 }
+
 app.get('/products/filter/price', (req, res) => {
-  let filterPrice = parseFloat(req.query.price);
-  let result = products.filter((product) =>
-    filterByPrice(product, filterPrice)
+  res.json(
+    products.filter((prod) => filterByPrice(prod, parseFloat(req.query.price)))
   );
-  res.json(result);
 });
 
-// Endpoint 9
 app.get('/products', (req, res) => {
   res.json(products);
 });
