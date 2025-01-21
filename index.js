@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const { resolve } = require('path');
 const app = express();
-const port = 3000;
+const port = 3010;
 // app.use(express.static('static'));
 app.use(cors());
 let products = [
