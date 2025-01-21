@@ -3,7 +3,7 @@ const cors = require('cors');
 
 const app = express();
 const port = 3000;
-app.use(express.static('public'));
+// app.use(express.static('public'));
 app.use(cors());
 let products = [
   {
@@ -263,7 +263,7 @@ function filterByRam(product, filterRam) {
   return product.ram === filterRam;
 }
 app.get('/products/filter/ram', (req, res) => {
-  let filterRam = parseInt(req.query.ram);
+  let filterRam = parseInt(req.query.filterRam);
   let result = products.filter((product) => filterByRam(product, filterRam));
   res.json(result);
 });
@@ -273,7 +273,7 @@ function filterByRom(product, filterRom) {
   return product.rom === filterRom;
 }
 app.get('/products/filter/rom', (req, res) => {
-  let filterRom = parseInt(req.query.rom);
+  let filterRom = parseInt(req.query.filterRom);
   let result = products.filter((product) => filterByRom(product, filterRom));
   res.json(result);
 });
@@ -283,7 +283,7 @@ function filterByBrand(product, filterBrand) {
   return product.brand.toLowerCase() === filterBrand.toLowerCase();
 }
 app.get('/products/filter/brand', (req, res) => {
-  let filterBrand = req.query.brand;
+  let filterBrand = req.query.filterBrand;
   let result = products.filter((product) =>
     filterByBrand(product, filterBrand)
   );
@@ -295,7 +295,7 @@ function filterByOs(product, filterOs) {
   return product.os.toLowerCase() === filterOs.toLowerCase();
 }
 app.get('/products/filter/os', (req, res) => {
-  let filterOs = req.query.os;
+  let filterOs = req.query.filterOs;
   let result = products.filter((product) => filterByOs(product, filterOs));
   res.json(result);
 });
@@ -305,7 +305,7 @@ function filterByPrice(product, filterPrice) {
   return product.price <= filterPrice;
 }
 app.get('/products/filter/price', (req, res) => {
-  let filterPrice = parseFloat(req.query.price);
+  let filterPrice = parseFloat(req.query.filterPrice);
   let result = products.filter((product) =>
     filterByPrice(product, filterPrice)
   );
